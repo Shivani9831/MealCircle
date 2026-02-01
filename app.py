@@ -219,3 +219,4 @@ elif page == "Analytics":
 
 st.sidebar.markdown("---")
 st.sidebar.info("Made with ❤ for a hunger-free world")
+
