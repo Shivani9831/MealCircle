@@ -4,23 +4,29 @@ from datetime import datetime
 import base64
 
 # --- Firebase setup ---
-try:
-    import firebase_admin
-    from firebase_admin import credentials, db
+import streamlit as st
+import firebase_admin
+from firebase_admin import credentials, db
 
+firebase_enabled = False
+
+try:
     if not firebase_admin._apps:
-        # Load credentials from Streamlit Secrets
-        firebase_creds = st.secrets["FIREBASE"]
+        firebase_creds = dict(st.secrets["FIREBASE"])
         firebase_creds["private_key"] = firebase_creds["private_key"].replace("\\n", "\n")
+
         cred = credentials.Certificate(firebase_creds)
         firebase_admin.initialize_app(cred, {
             "databaseURL": firebase_creds["databaseURL"]
         })
 
     firebase_enabled = True
+    st.success("🔥 Firebase Connected!")
+
 except Exception as e:
-    st.warning("Firebase not available. App will run with demo mode.")
-    firebase_enabled = False
+    st.error("❌ Firebase connection failed")
+    st.code(str(e))
+
 
 # --- Utility to encode images to base64 ---
 def get_base64_image(image_path):
@@ -219,3 +225,4 @@ elif page == "Analytics":
 
 st.sidebar.markdown("---")
 st.sidebar.info("Made with ❤ for a hunger-free world")
+
