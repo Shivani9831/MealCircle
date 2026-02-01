@@ -1,4 +1,6 @@
 import streamlit as st
+
+
 import pandas as pd
 from datetime import datetime
 import base64
@@ -238,5 +240,14 @@ elif page == "Analytics":
 
 st.sidebar.markdown("---")
 st.sidebar.info("Made with ❤ for a hunger-free world")
+
+
+if st.sidebar.button("Test Firebase"):
+    if firebase_enabled:
+        db.reference("test").set({"hello": "Shivani"})
+        st.success("Firebase write success!")
+    else:
+        st.error("Firebase not connected")
+
 
 
